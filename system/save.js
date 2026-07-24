@@ -1,16 +1,116 @@
-// ============================
-// system/save.js
-// 저장 / 초기화 시스템
-// ============================
+// ==========================================
+// KBO Baseball Game
+// save.js
+// 저장 / 불러오기 / 초기화 시스템
+// ==========================================
 
+
+
+// ==========================================
+// 기본 게임 데이터
+// ==========================================
+
+
+let gameData = {
+
+
+    // 선택 팀
+
+    team:"",
+
+
+    // 보유 선수
+
+    players:[],
+
+
+    // 자금 (억)
+
+    money:GAME_CONFIG.startMoney,
+
+
+    // 티켓
+
+    normalTicket:GAME_CONFIG.startNormalTicket,
+
+    premiumTicket:GAME_CONFIG.startPremiumTicket,
+
+
+
+    // 아이템
+
+    items:{
+
+
+        enhanceTicket:0,
+
+        protectTicket:0,
+
+        premiumEnhanceTicket:0,
+
+        traitChangeTicket:0
+
+
+    },
+
+
+
+    // 시즌 진행
+
+    seasonStage:1,
+
+
+    // 승패 기록
+
+    record:{
+
+
+        win:0,
+
+        lose:0,
+
+        draw:0
+
+
+    },
+
+
+
+    // 튜토리얼
+
+    tutorialComplete:false,
+
+
+
+    // FA 목록
+
+    faPlayers:[],
+
+
+    // 트레이드 기록
+
+    tradeHistory:[]
+
+
+};
+
+
+
+
+
+// 저장 이름
 
 const SAVE_KEY =
-"BaseballCardGameSave";
+"KBO_BASEBALL_SAVE";
 
 
 
 
+
+// ==========================================
 // 저장
+// ==========================================
+
 
 function saveGame(){
 
@@ -24,62 +124,38 @@ function saveGame(){
     );
 
 
+    console.log(
+        "게임 저장 완료"
+    );
+
 }
 
 
 
 
 
-
+// ==========================================
 // 불러오기
+// ==========================================
+
 
 function loadGame(){
 
 
-    let save =
-
-    localStorage.getItem(
-        SAVE_KEY
-    );
+    const saveData =
+    localStorage.getItem(SAVE_KEY);
 
 
 
-    if(save){
+    if(saveData){
 
 
         gameData =
-
-        JSON.parse(save);
-
-
-    }
+        JSON.parse(saveData);
 
 
-}
-
-
-
-
-
-
-// 저장 데이터 확인
-
-function checkSave(){
-
-
-    let save =
-
-    localStorage.getItem(
-        SAVE_KEY
-    );
-
-
-
-    if(save){
-
-
-        alert(
-            "💾 저장 데이터 있음"
+        console.log(
+            "저장 데이터 불러오기 완료"
         );
 
 
@@ -88,8 +164,8 @@ function checkSave(){
     else{
 
 
-        alert(
-            "💾 저장 데이터 없음"
+        console.log(
+            "새 게임 시작"
         );
 
 
@@ -102,45 +178,27 @@ function checkSave(){
 
 
 
-
+// ==========================================
 // 게임 초기화
+// ==========================================
+
 
 function resetGame(){
 
 
-
     let check =
-
     confirm(
-
-        "⚠️ 게임을 초기화하시겠습니까?\n\n"
-        +
-        "모든 선수, 자금, 아이템이 삭제됩니다."
-
+    "모든 게임 데이터를 삭제할까요?"
     );
 
 
-
     if(!check)
-
         return;
 
 
 
-
-
     localStorage.removeItem(
-
         SAVE_KEY
-
-    );
-
-
-
-    alert(
-
-        "게임이 초기화되었습니다."
-
     );
 
 
@@ -149,3 +207,106 @@ function resetGame(){
 
 
 }
+
+
+
+
+
+// ==========================================
+// 돈 추가
+// ==========================================
+
+
+function addMoney(amount){
+
+
+    gameData.money += amount;
+
+
+    saveGame();
+
+}
+
+
+
+
+
+// ==========================================
+// 돈 사용
+// ==========================================
+
+
+function spendMoney(amount){
+
+
+    if(gameData.money < amount){
+
+
+        alert(
+        "자금이 부족합니다."
+        );
+
+
+        return false;
+
+    }
+
+
+
+    gameData.money -= amount;
+
+
+    saveGame();
+
+
+    return true;
+
+}
+
+
+
+
+
+// ==========================================
+// 티켓 추가
+// ==========================================
+
+
+function addTicket(type,count){
+
+
+
+    if(type==="normal"){
+
+
+        gameData.normalTicket += count;
+
+
+    }
+
+
+    if(type==="premium"){
+
+
+        gameData.premiumTicket += count;
+
+
+    }
+
+
+
+    saveGame();
+
+
+}
+
+
+
+
+
+// ==========================================
+// 시작 시 실행
+// ==========================================
+
+
+loadGame();
