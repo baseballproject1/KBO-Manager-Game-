@@ -288,47 +288,317 @@ function failEnhance(card){
 // ==========================================
 // 실패 시 능력 감소
 // ==========================================
-
-
-function decreaseRandomStat(card){
-
-
-
-    let stats = [
-
-        "power",
-
-        "contact",
-
-        "speed",
-
-        "defense",
-
-        "pitch"
-
-    ];
+// ==========================================
+// KBO Baseball Game
+// shopitems.js
+// 상점 / 아이템 구매 시스템
+// ==========================================
 
 
 
-    let random =
-
-    stats[
-
-        Math.floor(
-            Math.random()*stats.length
-        )
-
-    ];
+// ==========================================
+// 상점 아이템 목록
+// ==========================================
 
 
+const SHOP_ITEMS = {
 
-    if(card.stats[random] > 0){
+
+    normalTicket:{
+
+        name:"일반 뽑기권",
+
+        price:5,
+
+        type:"normalTicket"
+
+    },
 
 
-        card.stats[random] -= 1;
+    premiumTicket:{
+
+        name:"고급 뽑기권",
+
+        price:20,
+
+        type:"premiumTicket"
+
+    },
+
+
+    enhanceTicket:{
+
+        name:"강화권",
+
+        price:10,
+
+        type:"enhanceTicket"
+
+    },
+
+
+    protectTicket:{
+
+        name:"하락방지권",
+
+        price:15,
+
+        type:"protectTicket"
+
+    },
+
+
+    traitChangeTicket:{
+
+        name:"특성변경권",
+
+        price:10,
+
+        type:"traitChangeTicket"
+
+    },
+
+
+    premiumEnhanceTicket:{
+
+        name:"고급강화권",
+
+        price:50,
+
+        type:"premiumEnhanceTicket"
+
+    }
+
+
+};
+
+
+
+
+
+// ==========================================
+// 아이템 구매
+// ==========================================
+
+
+function buyItem(itemId){
+
+
+
+    let item =
+    SHOP_ITEMS[itemId];
+
+
+
+    if(!item){
+
+
+        alert(
+        "없는 상품입니다."
+        );
+
+
+        return;
 
 
     }
+
+
+
+
+
+    if(!spendMoney(item.price)){
+
+
+        return;
+
+
+    }
+
+
+
+
+
+    addItem(
+
+        item.type,
+
+        1
+
+    );
+
+
+
+    alert(
+
+    `${item.name} 구매 완료!`
+
+    );
+
+
+
+    saveGame();
+
+
+}
+
+
+
+
+
+// ==========================================
+// 아이템 지급
+// ==========================================
+
+
+function addItem(type,count){
+
+
+
+    switch(type){
+
+
+
+        case "normalTicket":
+
+            gameData.normalTicket += count;
+
+            break;
+
+
+
+
+        case "premiumTicket":
+
+            gameData.premiumTicket += count;
+
+            break;
+
+
+
+
+        case "enhanceTicket":
+
+            gameData.items.enhanceTicket += count;
+
+            break;
+
+
+
+
+        case "protectTicket":
+
+            gameData.items.protectTicket += count;
+
+            break;
+
+
+
+
+        case "traitChangeTicket":
+
+            gameData.items.traitChangeTicket += count;
+
+            break;
+
+
+
+
+        case "premiumEnhanceTicket":
+
+            gameData.items.premiumEnhanceTicket += count;
+
+            break;
+
+
+
+    }
+
+
+
+    saveGame();
+
+
+}
+
+
+
+
+
+// ==========================================
+// 아이템 개수 확인
+// ==========================================
+
+
+function getItemCount(type){
+
+
+
+    switch(type){
+
+
+
+        case "normalTicket":
+
+            return gameData.normalTicket;
+
+
+
+        case "premiumTicket":
+
+            return gameData.premiumTicket;
+
+
+
+        default:
+
+            return gameData.items[type] || 0;
+
+
+    }
+
+
+}
+
+
+
+
+
+// ==========================================
+// 상점 표시
+// ==========================================
+
+
+function showShop(){
+
+
+
+    let text =
+
+    "===== 상점 =====\n\n";
+
+
+
+    for(let id in SHOP_ITEMS){
+
+
+
+        let item =
+        SHOP_ITEMS[id];
+
+
+
+        text +=
+
+        `${item.name} : ${item.price}억\n`;
+
+
+
+    }
+
+
+
+    alert(text);
 
 
 }
