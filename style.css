@@ -1,0 +1,250 @@
+/* ============================
+   style.css
+   프로야구 카드게임 디자인
+   ============================ */
+
+
+body{
+
+    margin:0;
+
+    padding:20px;
+
+    background:#0b1020;
+
+    color:white;
+
+    font-family:
+
+    Arial,
+    "맑은 고딕",
+    sans-serif;
+
+    text-align:center;
+
+}
+
+
+
+
+
+h1{
+
+    color:#ffd700;
+
+    font-size:35px;
+
+}
+
+
+
+
+
+h2{
+
+    border-bottom:
+
+    2px solid #ffd700;
+
+    padding-bottom:10px;
+
+}
+
+
+
+
+
+
+select,
+button{
+
+    padding:12px;
+
+    margin:5px;
+
+    border-radius:10px;
+
+    border:none;
+
+    font-size:16px;
+
+}
+
+
+
+
+
+button{
+
+    background:#ffd700;
+
+    color:#111;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+}
+
+
+
+
+
+button:hover{
+
+    background:#fff;
+
+}
+
+
+
+
+
+
+#userInfo{
+
+    background:#16213e;
+
+    padding:15px;
+
+    margin:20px auto;
+
+    border-radius:15px;
+
+    max-width:500px;
+
+}
+
+
+
+
+
+#cardArea{
+
+    margin-top:20px;
+
+}
+
+
+
+
+
+#players{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:15px;
+
+}
+
+
+
+
+
+.playerCard{
+
+    width:170px;
+
+    background:#1f2937;
+
+    border-radius:15px;
+
+    padding:15px;
+
+    box-shadow:
+
+    0 0 10px black;
+
+}
+
+
+
+
+
+.playerCard h3{
+
+    color:#ffd700;
+
+}
+
+
+
+
+
+/* 카드 등급 */
+
+
+.playerCard.일반{
+
+    border:3px solid white;
+
+}
+
+
+
+.playerCard.A{
+
+    border:3px solid #2980ff;
+
+}
+
+
+
+.playerCard.S{
+
+    border:3px solid #00ff66;
+
+}
+
+
+
+.playerCard.골든글러브{
+
+    border:3px solid gold;
+
+}
+
+
+
+.playerCard.시그니처{
+
+    border:3px solid red;
+
+}
+
+
+
+.playerCard.레전드{
+
+    border:3px solid purple;
+
+    background:#311b4b;
+
+}
+
+
+
+
+
+@media(max-width:600px){
+
+
+    h1{
+
+        font-size:28px;
+
+    }
+
+
+    .playerCard{
+
+        width:140px;
+
+    }
+
+
+}
