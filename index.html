@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>프로야구 카드게임</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+
+<body>
+
+
+<h1>⚾ 프로야구 카드게임</h1>
+
+
+
+<!-- 튜토리얼 다시보기 -->
+
+<button onclick="replayTutorial()">
+📖 튜토리얼
+</button>
+
+
+
+
+
+<!-- 팀 선택 -->
+
+<div id="teamSelect">
+
+
+<h2>🏟 팀 선택</h2>
+
+
+<select id="teamList">
+
+
+<option>SSG</option>
+
+<option>LG</option>
+
+<option>삼성</option>
+
+<option>KIA</option>
+
+<option>KT</option>
+
+<option>두산</option>
+
+<option>롯데</option>
+
+<option>한화</option>
+
+<option>키움</option>
+
+<option>NC</option>
+
+
+</select>
+
+
+
+<button onclick="selectTeam()">
+
+선택
+
+</button>
+
+
+</div>
+
+
+
+
+
+<!-- 내 정보 -->
+
+
+<div id="userInfo">
+
+
+<h2>내 팀</h2>
+
+
+<p id="myTeam">
+
+없음
+
+</p>
+
+
+
+<p>
+
+💰 보유 자금 :
+
+<span id="money">
+
+100억
+
+</span>
+
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+<!-- 아이템 -->
+
+<div id="items">
+
+
+<h2>🎒 아이템</h2>
+
+
+<p>
+
+일반 뽑기권 :
+
+<span id="normalGachaTicket">
+
+10
+
+</span>
+
+</p>
+
+
+
+<p>
+
+고급 뽑기권 :
+
+<span id="highGachaTicket">
+
+1
+
+</span>
+
+</p>
+
+
+
+<p>
+
+특성 변경권 :
+
+<span id="traitChangeTicket">
+
+1
+
+</span>
+
+</p>
+
+
+
+<p>
+
+강화권 :
+
+<span id="enhanceTicket">
+
+2
+
+</span>
+
+</p>
+
+
+
+<p>
+
+하락 방지권 :
+
+<span id="protectTicket">
+
+1
+
+</span>
+
+</p>
+
+
+
+<p>
+
+고급 강화권 :
+
+<span id="advancedEnhanceTicket">
+
+0
+
+</span>
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+<!-- 선수 카드 -->
+
+
+<div id="cardArea">
+
+
+<h2>⚾ 선수 카드</h2>
+
+
+<div id="players">
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- 메뉴 -->
+
+
+<div>
+
+
+<button onclick="openGacha()">
+
+🎲 뽑기
+
+</button>
+
+
+
+<button onclick="openShop()">
+
+🏪 상점
+
+</button>
+
+
+
+<button onclick="openEnhance()">
+
+🔨 강화
+
+</button>
+
+
+
+<button onclick="changeTrait()">
+
+🔄 특성 변경
+
+</button>
+
+
+
+<button onclick="makeLegend()">
+
+👑 레전드 제작
+
+</button>
+
+
+
+<button onclick="startMatch()">
+
+⚾ 경기
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- 데이터 -->
+
+<script src="data/players.js"></script>
+
+<script src="data/teams.js"></script>
+
+<script src="data/traits.js"></script>
+
+
+
+
+
+<!-- 시스템 -->
+
+<script src="system/save.js"></script>
+
+<script src="system/tutorial.js"></script>
+
+<script src="system/gacha.js"></script>
+
+<script src="system/shopItems.js"></script>
+
+<script src="system/shop.js"></script>
+
+<script src="system/enhance.js"></script>
+
+<script src="system/traitChange.js"></script>
+
+<script src="system/legend.js"></script>
+
+<script src="system/match.js"></script>
+
+<script src="system/reward.js"></script>
+
+
+
+
+
+<!-- 메인 -->
+
+<script src="app.js"></script>
+
+
+
+</body>
+
+
+</html>
