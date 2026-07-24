@@ -1,131 +1,38 @@
-// ============================
-// system/gacha.js
+// ==========================================
+// KBO Baseball Game
+// gacha.js
 // 뽑기 시스템
-// ============================
+// ==========================================
 
 
 
-// 일반 뽑기
+// ==========================================
+// 랜덤 등급 선택
+// ==========================================
 
-function normalGacha(){
+
+function getRandomGrade(type){
 
 
-    if(gameData.inventory.normalGachaTicket <= 0){
-
-        alert("일반 뽑기권이 없습니다.");
-
-        return;
-
-    }
+    let table;
 
 
 
-    gameData.inventory.normalGachaTicket--;
+    if(type==="premium"){
 
 
-
-    let grade = randomGrade("normal");
-
-
-    let player = getRandomPlayerByGrade(grade);
-
-
-
-    if(player){
-
-
-        gameData.players.push(
-            JSON.parse(JSON.stringify(player))
-        );
-
-
-        alert(
-            player.name
-            +
-            " 획득!\n등급 : "
-            +
-            player.grade
-        );
+        table = GACHA_RATE.premium;
 
 
     }
 
+    else{
 
 
-    saveGame();
-
-    updateUI();
-
-
-}
-
-
-
-
-
-
-// 고급 뽑기
-
-function highGacha(){
-
-
-    if(gameData.inventory.highGachaTicket <= 0){
-
-        alert("고급 뽑기권이 없습니다.");
-
-        return;
-
-    }
-
-
-
-    gameData.inventory.highGachaTicket--;
-
-
-
-    let grade = randomGrade("high");
-
-
-    let player = getRandomPlayerByGrade(grade);
-
-
-
-    if(player){
-
-
-        gameData.players.push(
-            JSON.parse(JSON.stringify(player))
-        );
-
-
-        alert(
-            player.name
-            +
-            " 획득!\n등급 : "
-            +
-            player.grade
-        );
+        table = GACHA_RATE.normal;
 
 
     }
-
-
-
-    saveGame();
-
-    updateUI();
-
-
-}
-
-
-
-
-
-
-// 등급 확률
-
-function randomGrade(type){
 
 
 
@@ -134,69 +41,31 @@ function randomGrade(type){
 
 
 
-
-    // 일반 뽑기
-    // 일반 60 / A20 / S10 / 골든글러브6 / 시그니처4
-
-    if(type === "normal"){
+    let total = 0;
 
 
-        if(random < 60)
 
-            return "일반";
-
-
-        if(random < 80)
-
-            return "A";
+    for(let grade in table){
 
 
-        if(random < 90)
-
-            return "S";
+        total += table[grade];
 
 
-        if(random < 96)
 
-            return "골든글러브";
+        if(random <= total){
 
 
-        return "시그니처";
+            return grade;
+
+
+        }
 
 
     }
 
 
 
-
-
-    // 고급 뽑기
-    // A60 / S20 / 골든글러브15 / 시그니처5
-
-
-    if(type === "high"){
-
-
-        if(random < 60)
-
-            return "A";
-
-
-        if(random < 80)
-
-            return "S";
-
-
-        if(random < 95)
-
-            return "골든글러브";
-
-
-        return "시그니처";
-
-
-    }
-
+    return "일반";
 
 }
 
@@ -204,45 +73,92 @@ function randomGrade(type){
 
 
 
+// ==========================================
+// 뽑기 실행
+// ==========================================
 
 
-// 등급별 선수 랜덤 선택
-
-function getRandomPlayerByGrade(grade){
+function drawGacha(type){
 
 
-    let list =
 
-    allPlayers.filter(
+    let grade =
+    getRandomGrade(type);
 
-        player =>
+
+
+    let candidates =
+    allPlayers.filter(player =>
+
+
+
+        player.team === gameData.team &&
 
         player.grade === grade
 
+
+
     );
 
 
 
-    if(list.length === 0){
 
-        return null;
+
+    // 해당 등급 선수가 없을 경우
+
+    if(candidates.length===0){
+
+
+        candidates =
+        allPlayers.filter(player =>
+
+            player.team === gameData.team
+
+        );
+
 
     }
 
 
 
 
-    let index =
 
-    Math.floor(
-
-        Math.random()*list.length
-
-    );
+    if(candidates.length===0){
 
 
+        alert(
+        "선수를 찾을 수 없습니다."
+        );
 
-    return list[index];
+
+        return null;
+
+
+    }
+
+
+
+
+
+    let player =
+
+    candidates[
+
+        Math.floor(
+            Math.random()*candidates.length
+        )
+
+    ];
+
+
+
+
+
+    addCard(player);
+
+
+
+    return player;
 
 
 }
@@ -251,38 +167,253 @@ function getRandomPlayerByGrade(grade){
 
 
 
+// ==========================================
+// 카드 추가
+// ==========================================
 
 
-// 뽑기 메뉴
-
-function gachaMenu(){
+function addCard(player){
 
 
-    let select =
 
-    confirm(
+    let card = {
 
-        "뽑기 선택\n\n"
-        +
-        "확인 : 일반 뽑기\n"
-        +
-        "취소 : 고급 뽑기"
 
+        uid:Date.now(),
+
+
+        name:player.name,
+
+
+        team:player.team,
+
+
+        grade:player.grade,
+
+
+        position:player.position,
+
+
+
+        stats:{
+
+
+            ...player.stats
+
+
+        },
+
+
+        enhance:0
+
+
+    };
+
+
+
+
+    gameData.players.push(card);
+
+
+
+    saveGame();
+
+
+}
+
+
+
+
+
+// ==========================================
+// 일반 뽑기권 사용
+// ==========================================
+
+
+function useNormalGacha(){
+
+
+
+    if(gameData.normalTicket<=0){
+
+
+        alert(
+        "일반 뽑기권이 없습니다."
+        );
+
+
+        return;
+
+
+    }
+
+
+
+
+
+    gameData.normalTicket--;
+
+
+
+
+
+    let result =
+    drawGacha("normal");
+
+
+
+
+
+    if(result){
+
+
+        alert(
+
+        `${result.name} ${result.grade} 획득!`
+
+        );
+
+
+    }
+
+
+
+    saveGame();
+
+
+}
+
+
+
+
+
+// ==========================================
+// 고급 뽑기권 사용
+// ==========================================
+
+
+function usePremiumGacha(){
+
+
+
+    if(gameData.premiumTicket<=0){
+
+
+        alert(
+        "고급 뽑기권이 없습니다."
+        );
+
+
+        return;
+
+
+    }
+
+
+
+
+
+    gameData.premiumTicket--;
+
+
+
+
+
+    let result =
+    drawGacha("premium");
+
+
+
+
+
+    if(result){
+
+
+        alert(
+
+        `${result.name} ${result.grade} 획득!`
+
+        );
+
+
+    }
+
+
+
+    saveGame();
+
+
+}
+
+
+
+
+
+// ==========================================
+// 선수 판매
+// ==========================================
+
+
+function sellCard(index){
+
+
+
+    let card =
+    gameData.players[index];
+
+
+
+    if(!card)
+        return;
+
+
+
+
+    let price = 1;
+
+
+
+    if(card.grade==="A")
+        price=2;
+
+
+    if(card.grade==="S")
+        price=5;
+
+
+    if(card.grade==="골든글러브")
+        price=10;
+
+
+    if(card.grade==="시그니처")
+        price=15;
+
+
+    if(card.grade==="레전드")
+        price=30;
+
+
+
+
+
+    gameData.money += price;
+
+
+
+    gameData.players.splice(
+        index,
+        1
     );
 
 
 
-    if(select){
+    saveGame();
 
-        normalGacha();
 
-    }
 
-    else{
-
-        highGacha();
-
-    }
+    alert(
+    `${price}억 획득`
+    );
 
 
 }
